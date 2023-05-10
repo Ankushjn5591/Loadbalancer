@@ -34,6 +34,10 @@ monitor_config {
     timeout = "5"
     tolerated_failures = "3"
   }
+  dns_config {
+    relative_name = "mytrmprofile"
+    ttl = 60
+  }
 }
   
 
