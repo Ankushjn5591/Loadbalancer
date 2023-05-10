@@ -25,33 +25,6 @@ resource "azurerm_traffic_manager_profile" "trm" {
   name                = "myfirsttm"
   resource_group_name = data.azurerm_resource_group.rg1.name
   traffic_routing_method = "Performance"
-
-  monitor_config {
-    protocol = "http"
-    port = 80
-    path = "/"
-    interval = "10"
-    timeout = "5"
-    tolerated_failures = "3"
-  }
-}
-
-resource "azurerm_traffic_manager_endpoint" "endpoint1" {
-  name                = "endpoint1"
-  resource_group_name = azurerm_resource_group.trm.name
-  profile_name        = azurerm_traffic_manager_profile.trm.name
-  type                = "azureEndpoints"
-  target_resource_id   = data.azurerm_public_ip.pip.name
-  endpoint_location   = data.azurerm_resource_group.rg1.location
-}
-
-resource "azurerm_traffic_manager_endpoint" "endpoint2" {
-  name                = "endpoint2"
-  resource_group_name = azurerm_resource_group.trm.name
-  profile_name        = azurerm_traffic_manager_profile.trm.name
-  type                = "azureEndpoints"
-  target_resource_id   = data.azurerm_public_ip.pip2.name
-  endpoint_location   = data.azurerm_resource_group.rg1.location
 }
 
 
