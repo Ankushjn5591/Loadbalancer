@@ -47,6 +47,7 @@ resource "azurerm_lb" "lb" {
     public_ip_address_id          = azurerm_public_ip.lbip.id
     private_ip_address_allocation = "Dynamic"
   }
+}  
 
 resource "azurerm_lb_backend_address_pool" "loadpool" {
   name                = "lbbackend"
