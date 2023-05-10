@@ -30,10 +30,7 @@ monitor_config {
     protocol = "http"
     port = 80
     path = "/"
-    interval = "10"
-    timeout = "5"
-    tolerated_failures = "3"
-  }
+    }
   dns_config {
     relative_name = "mytrmprofile"
     ttl = 60
