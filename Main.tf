@@ -80,10 +80,11 @@ resource "azurerm_lb_probe" "lbprobe" {
   timeout_seconds     = 10
 }
 
- load_balancing_rule {
+ resource "azurerm_load_balancing_rule" "lbrule" {
     name                   = "lbrule"
     frontend_ip_configuration_name = azurerm_lb.frontend_ip_configuration.lb.name
     backend_address_pool_id         = azurerm_lb_backend_address_pool.loadpool.id
+    loadbalancer_id          = azurerm_lb.lb.id
     protocol                         = "Tcp"
     frontend_port                    = 80
     backend_port                     = 80
@@ -91,7 +92,6 @@ resource "azurerm_lb_probe" "lbprobe" {
     idle_timeout_in_minutes          = 5
     probe_id                          = azurerm_lb_probe.lbprobe.id
   }
-}
 
 terraform {
   backend "azurerm" {
