@@ -4,7 +4,6 @@ provider "azurerm" {
 
 data "azurerm_resource_group" "rg1" {
    name = "ankushrg"
-   location = "East US"
 }
 
 data "azurerm_network_interface" "nic" {
@@ -19,7 +18,6 @@ data "azurerm_public_ip" "pip" {
 
 data "azurerm_resource_group" "rg2" {
    name = "chhavirg"
-   location = "East US"
 }
 
 data "azurerm_network_interface" "nic2" {
