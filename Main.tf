@@ -61,11 +61,6 @@ resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
   backend_address_pool_id = azurerm_lb_backend_address_pool.loadpool.id
 }
 
-resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
-  network_interface_id = data.azurerm_network_interface_nic2.name
-  ip_configuration_name = data.azurerm_public_ip.pip2.name
-  backend_address_pool_id = azurerm_lb_backend_address_pool.loadpool.id
-}
 
 resource "azurerm_lb_probe" "lbprobe" {
   name                = "lbprobe"
