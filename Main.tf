@@ -46,48 +46,43 @@ resource "azurerm_lb" "lb" {
     name                          = "lbfrontendip"
     public_ip_address_id          = azurerm_public_ip.lbip.id
     private_ip_address_allocation = "Dynamic"
-  }
+}
+  backend_address_pool {
+    name = "lbbackend"
 }  
 
-resource "azurerm_lb_backend_address_pool" "loadpool" {
-  name                = "lbbackend"
-  resource_group_name = data.azurerm_resource_group.rg1.name
-  loadbalancer_id     = azurerm_lb.lb.id
-}
+probe {
+    name                      = "lbhealthprobe"
+    protocol                  = "Tcp"
+    port                      = 80
+    interval                  = 15
+    number_of_probes          = 2
+    request_path              = "/"
+    unhealthy_threshold       = 2
+    timeout_seconds           = 10
+  }
 
-resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
-  network_interface_id = data.azurerm_network_interface_nic.name
-  ip_configuration_name = data.azurerm_public_ip.pip.name
-  backend_address_pool_id = azurerm_lb_backend_address_pool.loadpool.id
-}
-
-
-resource "azurerm_lb_probe" "lbprobe" {
-  name                = "lbprobe"
-  resource_group_name = data.azurerm_resource_group.rg1.name
-  loadbalancer_id     = azurerm_lb.lb.id
-  protocol            = "Tcp"
-  port                = 80
-  interval            = 15
-  number_of_probes    = 2
-  request_path        = "/"
-  unhealthy_threshold = 2
-  timeout_seconds     = 10
-}
-
- resource "azurerm_load_balancing_rule" "lbrule" {
+  load_balancing_rule {
     name                   = "lbrule"
-    frontend_ip_configuration_name = azurerm_lb.frontend_ip_configuration.lb.name
-    backend_address_pool_id         = azurerm_lb_backend_address_pool.loadpool.id
-    loadbalancer_id          = azurerm_lb.lb.id
+    frontend_ip_configuration_name = "lbfrontendip"
+    backend_address_pool_id         = "lbbackend"
     protocol                         = "Tcp"
     frontend_port                    = 80
     backend_port                     = 80
     enable_floating_ip               = false
     idle_timeout_in_minutes          = 5
-    probe_id                          = azurerm_lb_probe.lbprobe.id
+    probe_id                          = "lbhealthprobe"
   }
+}
 
+resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
+  network_interface_id = data.azurerm_network_interface_nic.name
+  ip_configuration_name = data.azurerm_public_ip.pip.name
+  backend_address_pool_id = "lbbackend"
+}
+
+
+ 
 terraform {
   backend "azurerm" {
     resource_group_name  = "Storagerg"
