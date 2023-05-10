@@ -48,7 +48,7 @@ resource "azurerm_lb" "lb" {
     private_ip_address_allocation = "Dynamic"
   }
 
-resource "azurerm_lb_backend_address_pool" "lbpool" {
+resource "azurerm_lb_backend_address_pool" "loadpool" {
   name                = "lbbackend"
   resource_group_name = data.azurerm_resource_group.rg1.name
   loadbalancer_id     = azurerm_lb.lb.id
@@ -57,13 +57,13 @@ resource "azurerm_lb_backend_address_pool" "lbpool" {
 resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
   network_interface_id = data.azurerm_network_interface_nic.name
   ip_configuration_name = data.azurerm_public_ip.pip.name
-  backend_address_pool_id = azurerm_lb_backend_address_pool.lbpool.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.loadpool.id
 }
 
 resource "azurerm_network_interface_backend_address_pool_association"  "nic" {
   network_interface_id = data.azurerm_network_interface_nic2.name
   ip_configuration_name = data.azurerm_public_ip.pip2.name
-  backend_address_pool_id = azurerm_lb_backend_address_pool.lbpool.id
+  backend_address_pool_id = azurerm_lb_backend_address_pool.loadpool.id
 }
 
 resource "azurerm_lb_probe" "lbprobe" {
@@ -82,7 +82,7 @@ resource "azurerm_lb_probe" "lbprobe" {
  load_balancing_rule {
     name                   = "lbrule"
     frontend_ip_configuration_name = azurerm_lb.frontend_ip_configuration.lb.name
-    backend_address_pool_id         = azurerm_lb_backend_address_pool.lbpool.id
+    backend_address_pool_id         = azurerm_lb_backend_address_pool.loadpool.id
     protocol                         = "Tcp"
     frontend_port                    = 80
     backend_port                     = 80
