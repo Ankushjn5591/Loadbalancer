@@ -37,18 +37,6 @@ monitor_config {
   }
 }
 
-resource "azurerm_traffic_manager_endpoint" "endpoint1" {
-  name                = "endpoint1"
-  resource_group_name = azurerm_traffic_manager_profile.trm.resource_group_name
-  profile_name        = azurerm_traffic_manager_profile.trm.name
-  type                = "azureEndpoints"
-  target_resource_id   = data.azurerm_public_ip.pip.name
-  endpoint_location   = data.azurerm_resource_group.rg1.location
-}
-
-
-
-
 
 terraform {
   backend "azurerm" {
