@@ -25,7 +25,18 @@ resource "azurerm_traffic_manager_profile" "trm" {
   name                = "myfirsttm"
   resource_group_name = data.azurerm_resource_group.rg1.name
   traffic_routing_method = "Performance"
+
+monitor_config {
+    protocol = "http"
+    port = 80
+    path = "/"
+    interval = "10"
+    timeout = "5"
+    tolerated_failures = "3"
+  }
 }
+  
+
 
 
 terraform {
